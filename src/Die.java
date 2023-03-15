@@ -10,7 +10,8 @@ public class Die {
 
    public void roll() {
       Random random = new Random();
-      this.faceValue = random.nextInt(MAX) + 1;
+      int RandomFaceValue = random.nextInt(MAX) + 1;
+      this.setFaceValue(RandomFaceValue);
    }
 
    public void setFaceValue(int value) {
