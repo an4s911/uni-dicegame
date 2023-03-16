@@ -23,7 +23,7 @@ public class Die {
    }
 
    public String toString() {
-      return "Die's face value: " + this.faceValue;
+      return Integer.toString(this.faceValue);
    }
 
    public boolean equals(Die otherDie) {
