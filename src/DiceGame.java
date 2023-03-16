@@ -82,6 +82,9 @@ public class DiceGame {
 	}
 
 	public static boolean checkPlayerWin() {
+		if ((playerGrandTotal + playerTurnTotal) >= 100) {
+			return true;
+		}
 		return false;
 	}
 
