@@ -19,7 +19,7 @@ public class PairOfDice {
    }
 
    public String toString() {
-      return die1.getFaceValue() + " and " + die2.getFaceValue();
+      return die1.getFaceValue() + " " + die2.getFaceValue();
    }
 
    public boolean equals(PairOfDice anotherPairOfDice) {
