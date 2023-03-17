@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Die {
    private int faceValue;
-   public final int MAX=6;
+   public final int MAX = 6;
 
    public Die() {
       roll();

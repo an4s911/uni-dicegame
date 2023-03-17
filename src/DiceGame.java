@@ -23,24 +23,50 @@ public class DiceGame {
 				"in a single turn.\n" +
 				"Ready to begin? (Type 'y' when you're ready)");
 
-		char choice = getChoiceFromPlayer();
+		char choice = getChoiceFromPlayer("");
 
-		while (choice == 'y') {
-			choice = emulatePlayerTurn();
+		if (choice != 'y') {
+			return;
 		}
+
+		while (true) {
+			boolean playerWins = emulatePlayerTurn();
+			if (playerWins) {
+				System.out.println("You won!");
+				printScores();
+				break;
+			}
+
+			boolean computerWins = emulateComputerTurn();
+			if (computerWins) {
+				System.out.println("Better luck next time!");
+				printScores();
+				break;
+			}
+		}
+
 	}
 
-	public static char emulatePlayerTurn() {
-		while (true) {
+	public static boolean emulatePlayerTurn() {
+		boolean running = true;
+		while (running) {
 			System.out.println("You're rolling the dice...");
 			playerDice.roll();
 			System.out.println("You rolled " + playerDice.toString());
 
 			int validation = validateRoll(playerDice);
-
 			if (validation > 0) {
 				playerTurnTotal += playerDice.getDiceSum();
+
+				if (checkPlayerWin()) {
+					playerGrandTotal += playerTurnTotal;
+					return true;
+				}
+
 				printPlayerScores();
+				char choice = getChoiceFromPlayer("Do you want to continue rolling? (Type 'y' when you're ready)");
+				running = (choice == 'y');
+
 			} else if (validation == 0) {
 				System.out.println("You got a 1!");
 				playerTurnTotal = 0;
@@ -51,31 +77,60 @@ public class DiceGame {
 			}
 
 			if (validation <= 0) {
-				System.out.println("Continue? (Type 'y' when you're ready to turn the dice over to me)");
-				break;
-			}
-
-			if (checkPlayerWin()) {
-				System.out.println("YOU GOT MORE THAN 100.\nYOU WIN!!!");
-				return 'n'; // will return 'n' for NO. So the game ends
-			}
-
-			System.out.println("Do you want to continue rolling? (Type 'y' or 'n')");
-			char choice = getChoiceFromPlayer();
-
-			if (choice != 'y') {
-				break;
+				getChoiceFromPlayer("Continue? (Type 'y' when you're ready to turn the dice over to me)");
+				running = false;
 			}
 		}
 
 		playerGrandTotal += playerTurnTotal;
 		playerTurnTotal = 0;
-		char choice = getChoiceFromPlayer();
-		return choice;
+
+		printScores();
+
+		return false;
 	}
 
-	public static void emulateComputerTurn() {
+	public static boolean emulateComputerTurn() {
+		boolean running = true;
+		while (running) {
+			System.out.println("I'm rolling the dice...");
+			computerDice.roll();
+			System.out.println("I rolled " + computerDice);
 
+			int validation = validateRoll(computerDice);
+			if (validation > 0) {
+				computerTurnTotal += computerDice.getDiceSum();
+				if (checkComputerWin()) {
+					computerGrandTotal += computerTurnTotal;
+					return true;
+				}
+
+				printComputerScores();
+			} else if (validation == 0) {
+				System.out.println("I got a 1!");
+				computerTurnTotal = 0;
+			} else {
+				System.out.println("I got two 1's");
+				computerTurnTotal = 0;
+				computerGrandTotal = 0;
+			}
+
+			if (computerTurnTotal >= 20) {
+				System.out.println("I got more than 20 in this turn!");
+			}
+
+			if (validation <= 0 || computerTurnTotal >= 20) {
+				getChoiceFromPlayer("Continue? (Type 'y' when you're ready)");
+				running = false;
+			}
+		}
+
+		computerGrandTotal += computerTurnTotal;
+		computerTurnTotal = 0;
+
+		printScores();
+
+		return false;
 	}
 
 	public static boolean checkPlayerWin() {
@@ -86,7 +141,37 @@ public class DiceGame {
 	}
 
 	public static boolean checkComputerWin() {
+		if ((computerGrandTotal + computerTurnTotal) >= 100) {
+			return true;
+		}
 		return false;
+	}
+
+	public static void printPlayerScores() {
+		System.out.println("This gives you a turn total of\n" +
+				"\t" + playerTurnTotal);
+		System.out.println("and a grand total of\n" +
+				"\t" + (playerGrandTotal + playerTurnTotal));
+		System.out.println("The computer has a total of\n" +
+				"\t" + computerGrandTotal);
+		System.out.println();
+	}
+
+	public static void printComputerScores() {
+		System.out.println("This gives me a turn total of\n" +
+				"\t" + computerTurnTotal);
+		System.out.println("and a grand total of\n" +
+				"\t" + (computerGrandTotal + computerTurnTotal));
+		System.out.println("You have a total of\n" +
+				"\t" + playerGrandTotal);
+		System.out.println();
+	}
+
+	public static void printScores() {
+		System.out.println("The score is: ");
+		System.out.println("\tYou: " + playerGrandTotal);
+		System.out.println("\tComputer: " + computerGrandTotal);
+		System.out.println();
 	}
 
 	/**
@@ -107,28 +192,12 @@ public class DiceGame {
 		}
 	}
 
-	public static void printPlayerScores() {
-		System.out.println("This gives you a turn total of\n" +
-				"\t" + playerTurnTotal);
-		System.out.println("and a grand total of\n" +
-				"\t" + (playerGrandTotal + playerTurnTotal));
-		System.out.println("The computer has a total of\n" +
-				"\t" + computerGrandTotal);
-	}
-
-	public static void printComputerScores() {
-		System.out.println("This gives me a turn total of\n" +
-				"\t" + computerTurnTotal);
-		System.out.println("and a grand total of\n" +
-				"\t" + (computerGrandTotal + computerTurnTotal));
-		System.out.println("You have a total of\n" +
-				"\t" + playerGrandTotal);
-	}
-
 	private static Scanner sc = new Scanner(System.in);
 
-	public static char getChoiceFromPlayer() {
+	public static char getChoiceFromPlayer(String prompt) {
+		System.out.println(prompt);
 		char choice = sc.nextLine().toLowerCase().charAt(0);
+		System.out.println();
 		return choice;
 	}
 }
