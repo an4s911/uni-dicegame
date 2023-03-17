@@ -25,12 +25,12 @@ public class DiceGame {
 
 		char choice = getChoiceFromPlayer();
 
-		if (choice == 'y') {
-			emulatePlayerTurn();
+		while (choice == 'y') {
+			choice = emulatePlayerTurn();
 		}
 	}
 
-	public static void emulatePlayerTurn() {
+	public static char emulatePlayerTurn() {
 		while (true) {
 			System.out.println("You're rolling the dice...");
 			playerDice.roll();
@@ -52,16 +52,12 @@ public class DiceGame {
 
 			if (validation <= 0) {
 				System.out.println("Continue? (Type 'y' when you're ready to turn the dice over to me)");
-				char choice = getChoiceFromPlayer();
-				if (choice == 'y') {
-					emulateComputerTurn();
-					return;
-				}
+				break;
 			}
 
 			if (checkPlayerWin()) {
 				System.out.println("YOU GOT MORE THAN 100.\nYOU WIN!!!");
-				return;
+				return 'n'; // will return 'n' for NO. So the game ends
 			}
 
 			System.out.println("Do you want to continue rolling? (Type 'y' or 'n')");
@@ -71,10 +67,11 @@ public class DiceGame {
 				break;
 			}
 		}
+
 		playerGrandTotal += playerTurnTotal;
 		playerTurnTotal = 0;
-		System.out.println("Okay so you are stopping. Your turn total is: " + playerTurnTotal);
-		System.out.println("and your grand total is : " + playerGrandTotal);
+		char choice = getChoiceFromPlayer();
+		return choice;
 	}
 
 	public static void emulateComputerTurn() {
@@ -128,9 +125,10 @@ public class DiceGame {
 				"\t" + playerGrandTotal);
 	}
 
+	private static Scanner sc = new Scanner(System.in);
+
 	public static char getChoiceFromPlayer() {
-		Scanner sc = new Scanner(System.in);
-		char choice = sc.next().toLowerCase().charAt(0);
+		char choice = sc.nextLine().toLowerCase().charAt(0);
 		return choice;
 	}
 }
