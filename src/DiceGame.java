@@ -20,10 +20,9 @@ public class DiceGame {
 				"any time. However, if you roll one or two 1's, you lose your\n" +
 				"turn. I (the computer) play by the same rules, except I'll\n" +
 				"always turn over the dice when I've rolled20 or more points\n" +
-				"in a single turn.\n" +
-				"Ready to begin? (Type 'y' when you're ready)");
+				"in a single turn.");
 
-		char choice = getChoiceFromPlayer("");
+		char choice = getChoiceFromPlayer("Ready to begin? (Type 'y' when you're ready)");
 
 		if (choice != 'y') {
 			return;
@@ -32,15 +31,15 @@ public class DiceGame {
 		while (true) {
 			boolean playerWins = emulatePlayerTurn();
 			if (playerWins) {
-				System.out.println("You won!");
 				printScores();
+				System.out.println("\nYOU WON!\n");
 				break;
 			}
 
 			boolean computerWins = emulateComputerTurn();
 			if (computerWins) {
-				System.out.println("Better luck next time!");
 				printScores();
+				System.out.println("\nBetter luck next time!\n");
 				break;
 			}
 		}
@@ -64,7 +63,7 @@ public class DiceGame {
 				}
 
 				printPlayerScores();
-				char choice = getChoiceFromPlayer("Do you want to continue rolling? (Type 'y' when you're ready)");
+				char choice = getChoiceFromPlayer("Do you want to continue rolling? (Type 'y' or 'n')");
 				running = (choice == 'y');
 
 			} else if (validation == 0) {
