@@ -1,15 +1,25 @@
 import java.util.Scanner;
 
+/**
+ * DiceGame --- game of dice between a player and a computer
+ * 
+ * @author Anas Bashir
+ */
 public class DiceGame {
-	private static int playerGrandTotal = 0;
-	private static int playerTurnTotal = 0;
+	private static int playerGrandTotal = 0; // Total score accumulated by player so far
+	private static int playerTurnTotal = 0; // Total score accumulated by player in the current turn
 
-	private static int computerGrandTotal = 0;
-	private static int computerTurnTotal = 0;
+	private static int computerGrandTotal = 0; // Total score accumulated by computer so far
+	private static int computerTurnTotal = 0; // Total score accumulated by computer in the current turn
 
-	private static PairOfDice playerDice = new PairOfDice();
-	private static PairOfDice computerDice = new PairOfDice();
+	private static PairOfDice playerDice = new PairOfDice(); // Player's dice
+	private static PairOfDice computerDice = new PairOfDice(); // Computer's dice
 
+	/**
+	 * main method
+	 * 
+	 * @param args A string array containing the command line arguments
+	 */
 	public static void main(String[] args) {
 
 		System.out.println("Welcome to the DiceGame. It's you against the computer.\n" +
@@ -46,6 +56,13 @@ public class DiceGame {
 
 	}
 
+	/**
+	 * Emulates the player's turn by rolling the dice, checking validation, checking
+	 * if the player has won, and asking if the player wants to continue rolling or
+	 * gives up the turn
+	 * 
+	 * @return boolean true if the player has won, false otherwise
+	 */
 	public static boolean emulatePlayerTurn() {
 		boolean running = true;
 		while (running) {
@@ -89,6 +106,13 @@ public class DiceGame {
 		return false;
 	}
 
+	/**
+	 * Emulates the computer's turn by rolling the dice, checking validation,
+	 * checking if the computer has won, and turning over the dice if the computer's
+	 * turn score is greater than 20
+	 * 
+	 * @return boolean true if the computer has won, false otherwise
+	 */
 	public static boolean emulateComputerTurn() {
 		boolean running = true;
 		while (running) {
@@ -132,6 +156,11 @@ public class DiceGame {
 		return false;
 	}
 
+	/**
+	 * Checks whether the player has won
+	 * 
+	 * @return true if the player has won, false otherwise
+	 */
 	public static boolean checkPlayerWin() {
 		if ((playerGrandTotal + playerTurnTotal) >= 100) {
 			return true;
@@ -139,6 +168,11 @@ public class DiceGame {
 		return false;
 	}
 
+	/**
+	 * Checks whether the computer has won
+	 * 
+	 * @return true if the computer has won, false otherwise
+	 */
 	public static boolean checkComputerWin() {
 		if ((computerGrandTotal + computerTurnTotal) >= 100) {
 			return true;
@@ -146,6 +180,10 @@ public class DiceGame {
 		return false;
 	}
 
+	/**
+	 * Prints the player's scores in a nice format
+	 * also prints the computer's total score
+	 */
 	public static void printPlayerScores() {
 		System.out.println("This gives you a turn total of\n" +
 				"\t" + playerTurnTotal);
@@ -156,6 +194,10 @@ public class DiceGame {
 		System.out.println();
 	}
 
+	/**
+	 * Prints the computer's scores in a nice format
+	 * also prints the player's total score
+	 */
 	public static void printComputerScores() {
 		System.out.println("This gives me a turn total of\n" +
 				"\t" + computerTurnTotal);
@@ -166,6 +208,9 @@ public class DiceGame {
 		System.out.println();
 	}
 
+	/**
+	 * Prints both the player's and the computer's total score in a nice format
+	 */
 	public static void printScores() {
 		System.out.println("The score is: ");
 		System.out.println("\tYou: " + playerGrandTotal);
@@ -177,9 +222,8 @@ public class DiceGame {
 	 * Validates roll of dice `dice`
 	 * 
 	 * @param dice object of type PairOfDice
-	 * @return Integer.
-	 *         Negative if two 1's, 0 if one 1 and positive if no 1's and the roll
-	 *         is valid
+	 * @return Integer. Negative if two 1's, 0 if one 1 and positive if zero 1's and
+	 *         the roll is valid
 	 */
 	public static int validateRoll(PairOfDice dice) {
 		if (dice.getDie1() == 1 && dice.getDie2() == 1) {
@@ -191,8 +235,14 @@ public class DiceGame {
 		}
 	}
 
-	private static Scanner sc = new Scanner(System.in);
+	private static Scanner sc = new Scanner(System.in); // Used to get input from the user
 
+	/**
+	 * Get single character choice input from the player
+	 * 
+	 * @param prompt
+	 * @return char first character of input after converting to lower case
+	 */
 	public static char getChoiceFromPlayer(String prompt) {
 		System.out.println(prompt);
 		char choice = sc.nextLine().toLowerCase().charAt(0);
