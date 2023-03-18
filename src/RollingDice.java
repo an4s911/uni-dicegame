@@ -1,4 +1,15 @@
+/**
+ * RollingDice --- Test the Die class
+ * 
+ * @author Anas Bashir
+ */
 public class RollingDice {
+
+   /**
+    * main method
+    * 
+    * @param args
+    */
    public static void main(String[] args) {
       Die myDie = new Die();
 
