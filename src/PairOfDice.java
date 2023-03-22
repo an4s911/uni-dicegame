@@ -59,7 +59,7 @@ public class PairOfDice {
     * @return boolean true if both objects are equal, false otherwise
     */
    public boolean equals(PairOfDice anotherPairOfDice) {
-      return this.die1 == anotherPairOfDice.die1 && this.die2 == anotherPairOfDice.die2;
+      return this.die1.equals(anotherPairOfDice.die1) && this.die2.equals(anotherPairOfDice.die2);
    }
 
    /**
